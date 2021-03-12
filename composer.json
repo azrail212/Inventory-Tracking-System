@@ -1,0 +1,12 @@
+{
+    "name": "ibu/Inventory-Tracking-System",
+    "description": "Inventory tracker for all kinds of businesses.",
+    "license": "Apache2",
+    "authors": [
+        {
+            "name": "Azrail",
+            "email": "azra.becirovic@stu.ibu.edu.ba"
+        }
+    ],
+    "require": {}
+}
