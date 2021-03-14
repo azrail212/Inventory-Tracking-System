@@ -7,7 +7,7 @@ require_once dirname(__FILE__)."/dao/UserDao.class.php";
 
 $userDao = new UserDao(); //creating userdao class object
 
-$getUserByName=$userDao->getUserByName('Azrail2122');
+//$getUserByName=$userDao->getUserByName('Azrail2122');
 //print_r($getUserByName);
 
 $user=$userDao->getUserByID(1);

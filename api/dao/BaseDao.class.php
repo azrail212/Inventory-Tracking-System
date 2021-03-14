@@ -4,6 +4,7 @@ require_once dirname(__FILE__)."/../config.php";
 class BaseDao {
   protected $connection;
   private $table;
+
   //connecting to server
   public function __construct(){
     //$this->table=$table;
@@ -16,12 +17,13 @@ class BaseDao {
     throw $e;
     }
   }
+
   //returns a maximum of 25 record from the table currently in focus
   public function getAll($offset=0, $limit=25){
     return $this->query("SELECT * FROM".$this->table." LIMIT ${limit} OFFSET {$offset}",[]);
   }
-  
-//inserts wanted values for an entity into a specified table
+
+  //inserts wanted values for an entity into a specified table
   protected function insertIntoTable($table,$entity){
     $query="INSERT INTO ${table} (";
 
@@ -45,7 +47,7 @@ class BaseDao {
     $entity['id']=$this->connection->lastInsertID();//returns ID of the last inserted row or sequence value
     return $entity;
   }
-//allows changing existing values in a table
+  //allows changing existing values in a table
   protected function updateTable($table, $id, $entity, $idColumn="id"){
     $query= "UPDATE ${$table} SET ";
     foreach($entity as $name=>$value){
@@ -59,7 +61,7 @@ class BaseDao {
     $stmt->execure($entity);
   }
 
-//this can execute any kind of query on the database
+  //this can execute any kind of query on the database
   protected function query($query, $parameters){
     $stmt = $this->connection->prepare($query);
     $stmt->execute($parameters); //executes query using parameters we passed
