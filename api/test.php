@@ -5,18 +5,20 @@ error_reporting(E_ALL);
 
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
 
-$userDao = new UserDao('Users'); //creating userdao class object
+$userDao = new UserDao(); //creating userdao class object
 
-$user=$userDao->getUserByID(3);
+$getUserByName=$userDao->getUserByName('Azrail2122');
+//print_r($getUserByName);
 
-print_r($user);
+$user=$userDao->getUserByID(1);
+//print_r($user);
 
-$testUser = [
-    'userName'=>'Azrail2122',
-    'userPassword'=>'sifra123',
-    'userStatus'=>true,
+$testAddUser = [
+    'userName'=>'Dino Keco',
+    'userPassword'=>'root123',
+    'userActive'=>true,
     'userPermissions'=>'admin'];
 
-    $user=$userDao->addUser($testUser);
+    $user=$userDao->addUser($testAddUser);
     print_r($user);
 ?>
