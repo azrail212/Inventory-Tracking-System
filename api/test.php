@@ -9,5 +9,14 @@ $userDao = new UserDao('Users'); //creating userdao class object
 
 $user=$userDao->getUserByID(3);
 
-echo($user);
+print_r($user);
+
+$testUser = [
+    'userName'=>'Azrail2122',
+    'userPassword'=>'sifra123',
+    'userStatus'=>true,
+    'userPermissions'=>'admin'];
+
+    $user=$userDao->addUser($testUser);
+    print_r($user);
 ?>

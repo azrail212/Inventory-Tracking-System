@@ -16,7 +16,7 @@ class MainDao {
     throw $e;
     }
   }
-  //returns a maximum of 25 re3cord from the table currently in focus
+  //returns a maximum of 25 record from the table currently in focus
   public function getAll($offset=0, $limit=25){
     return $this->query("SELECT * FROM".$this->table." LIMIT ${limit} OFFSET {$offset}",[]);
   }
