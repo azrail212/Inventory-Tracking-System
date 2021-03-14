@@ -20,6 +20,7 @@ class BaseDao {
   public function getAll($offset=0, $limit=25){
     return $this->query("SELECT * FROM".$this->table." LIMIT ${limit} OFFSET {$offset}",[]);
   }
+  
 //inserts wanted values for an entity into a specified table
   protected function insertIntoTable($table,$entity){
     $query="INSERT INTO ${table} (";
