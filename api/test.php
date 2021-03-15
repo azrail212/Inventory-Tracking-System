@@ -4,6 +4,7 @@ ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
+require_once dirname(__FILE__)."/dao/BaseDao.class.php";
 
 $userDao = new UserDao(); //creating userdao class object
 
@@ -13,13 +14,10 @@ $userDao = new UserDao(); //creating userdao class object
 //print_r($user);
 
 $testUser = [
-    'userName'=>'Frederik Henson',
-    'userPassword'=>'fredoHans',
-    'userStatus'=>'BLOCKED',
-    'userPermissions'=>'basic',
-    'userBranchOfficeID'=>2
+    "userPassword" => "test"
     ];
 
-$user=$userDao->addUser($testUser);
+$user = $userDao->updateUserByName('Dino Keco', $testUser);
+
 print_r($user);
 ?>

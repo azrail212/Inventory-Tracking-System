@@ -3,8 +3,7 @@ require_once dirname(__FILE__)."/../config.php";
 
 class BaseDao {
   protected $connection;
-  private $table;
-
+  public $table;
   //connecting to server
   public function __construct(){
     //$this->table=$table;
@@ -48,18 +47,18 @@ class BaseDao {
     return $entity;
   }
   
-  //allows changing existing values in a table
-  protected function updateTable($table, $id, $entity, $idColumn="id"){
-    $query= "UPDATE ${$table} SET ";
+  //allows changing existing values in any table
+  public function update($table, $id, $entity, $idColumn="id"){
+    $query= "UPDATE ${table} SET ";
     foreach($entity as $name=>$value){
       $query.= $name ."= :". $name. ", ";
     }
     $query=substr($query, 0, -2);
-    $query .= 'WHERE ${idColumn} = :id';
+    $query .= " WHERE ${idColumn} = :id";
 
     $stmt = $this->connection->prepare($query);
     $entity['id']=$id;
-    $stmt->execure($entity);
+    $stmt->execute($entity);
   }
 
   //this can execute any kind of query on the database

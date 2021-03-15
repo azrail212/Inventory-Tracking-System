@@ -21,18 +21,12 @@ class UserDao extends BaseDao{
         return $user; 
     }
 
-    public function changeUserCredentials($userID, $user){
-        $query = 'UPDATE Users SET ';
-        foreach($user as $name => $value){
-            $query.= $name .'= :'. $name. ', ';
-        }
-        
-        $query=substr($query, 0, -2);
-        $query .= ' WHERE userID=:userID';
-       
-        $stmt = $this->connection->prepare($query);
-        $user['userID']= $userID;
-        $stmt->execute($user);
+    public function updateUser($userID, $user){
+        $this->update('Users', $userID, $user);
+    }
+
+    public function updateUserByName($userName, $user){
+        $this->update('Users', $userName, $user, 'userName');
     }
 
 }
