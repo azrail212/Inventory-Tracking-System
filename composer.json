@@ -9,5 +9,7 @@
             "email": "azra.becirovic@stu.ibu.edu.ba"
         }
     ],
-    "require": {}
+    "require": {
+        "mikecao/flight": "^1.3"
+    }
 }

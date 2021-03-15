@@ -10,15 +10,16 @@ $userDao = new UserDao(); //creating userdao class object
 //$getUserByName=$userDao->getUserByName('Azrail2122');
 //print_r($getUserByName);
 
-$user=$userDao->getUserByID(1);
 //print_r($user);
 
-$testAddUser = [
-    'userName'=>'Dino Keco',
-    'userPassword'=>'root123',
-    'userActive'=>true,
-    'userPermissions'=>'admin'];
+$testUser = [
+    'userName'=>'Frederik Henson',
+    'userPassword'=>'fredoHans',
+    'userStatus'=>'BLOCKED',
+    'userPermissions'=>'basic',
+    'userBranchOfficeID'=>2
+    ];
 
-    $user=$userDao->addUser($testAddUser);
-    print_r($user);
+$user=$userDao->addUser($testUser);
+print_r($user);
 ?>

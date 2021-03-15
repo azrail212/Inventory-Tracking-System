@@ -47,6 +47,7 @@ class BaseDao {
     $entity['id']=$this->connection->lastInsertID();//returns ID of the last inserted row or sequence value
     return $entity;
   }
+  
   //allows changing existing values in a table
   protected function updateTable($table, $id, $entity, $idColumn="id"){
     $query= "UPDATE ${$table} SET ";
