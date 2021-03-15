@@ -48,8 +48,9 @@ class BaseDao {
   }
   
   //allows changing existing values in any table
-  public function update($table, $id, $entity, $idColumn="id"){
+  protected function update($table, $id, $entity, $idColumn="id"){
     $query= "UPDATE ${table} SET ";
+
     foreach($entity as $name=>$value){
       $query.= $name ."= :". $name. ", ";
     }
