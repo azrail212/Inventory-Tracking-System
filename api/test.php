@@ -4,20 +4,38 @@ ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
-require_once dirname(__FILE__)."/dao/BaseDao.class.php";
+require_once dirname(__FILE__)."/dao/BranchOfficesDao.class.php";
+require_once dirname(__FILE__)."/dao/LocationsDao.class.php";
+require_once dirname(__FILE__)."/dao/OrdersDao.class.php";
 
-$userDao = new UserDao(); //creating userdao class object
 
-//$getUserByName=$userDao->getUserByName('Azrail2122');
-//print_r($getUserByName);
 
-//print_r($user);
-
-$testUser = [
-    "userPassword" => "test"
+/*$dao = new BranchOfficesDao();
+$testOffice = [
+    'branchOfficeName' => 'Envera Sehovica 1a',
+    'branchOfficeCEOID' => 1,
+    'branchOfficeLocationID'=>1
     ];
 
-$user = $userDao->updateUserByName('Dino Keco', $testUser);
+$results = $dao->getAll();
+print_r($results);
+
+$dao = new UserDao();
+$testUser = [
+    'userName' => 'Enver Sehovic',
+    'userPassword' => '123456',
+    'userStatus'=>'active',
+    'userPermissions'=>'all'
+    ];
+
+$user=$dao->getByID(3);
 
 print_r($user);
+$dao=new LocationsDao();
+$dao=$dao->getAll();
+print_r($dao);*/
+$dao=new OrdersDao();
+$test=$dao->deleteOrder(2);
+print_r($test);
+
 ?>
