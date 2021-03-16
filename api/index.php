@@ -4,10 +4,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once dirname(__FILE__)."/dao/BaseDao.class.php";
-require_once dirname(__FILE__)."/dao/UsersDao.class.php";
+require_once dirname(__FILE__)."/dao/UserDao.class.php";
 
 $baseDaoInit = new BaseDao();
 echo "Hello from API";
 ?>
-
-
