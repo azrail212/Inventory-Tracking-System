@@ -13,6 +13,8 @@ require_once dirname(__FILE__)."/resources.php";
 
 $resources= new Resources();
 echo 'Im ok';
+echo 'commented all this out just in case you dont want to insert 
+a bunch more records and accidentally opened this page';
 /*$dao= new StorageSpacesDao();
 for ($i=0;$i<100;$i++){
 $storageSpaceAdd=[
