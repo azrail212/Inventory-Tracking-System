@@ -85,7 +85,7 @@ class BaseDao {
   }
 
   public function getAll($offset=0, $limit=25){
-    return $this->query("SELECT * FROM ".$this->table." LIMIT ${limit} OFFSET {$offset}",[]);
+    return $this->query("SELECT * FROM ".$this->table." LIMIT ${limit} OFFSET ${offset}",[]);
   }
 
   public function getByID($id){

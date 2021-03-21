@@ -7,35 +7,9 @@ require_once dirname(__FILE__)."/dao/UserDao.class.php";
 require_once dirname(__FILE__)."/dao/BranchOfficesDao.class.php";
 require_once dirname(__FILE__)."/dao/LocationsDao.class.php";
 require_once dirname(__FILE__)."/dao/OrdersDao.class.php";
+require_once dirname(__FILE__)."/dao/StorageSpacesDao.class.php";
+require_once dirname(__FILE__)."/dao/SuppliersDao.class.php";
+require_once dirname(__FILE__)."/resources.php";
 
-
-
-/*$dao = new BranchOfficesDao();
-$testOffice = [
-    'branchOfficeName' => 'Envera Sehovica 1a',
-    'branchOfficeCEOID' => 1,
-    'branchOfficeLocationID'=>1
-    ];
-
-$results = $dao->getAll();
-print_r($results);
-
-$dao = new UserDao();
-$testUser = [
-    'userName' => 'Enver Sehovic',
-    'userPassword' => '123456',
-    'userStatus'=>'active',
-    'userPermissions'=>'all'
-    ];
-
-$user=$dao->getByID(3);
-
-print_r($user);
-$dao=new LocationsDao();
-$dao=$dao->getAll();
-print_r($dao);*/
-$dao=new OrdersDao();
-$test=$dao->deleteOrder(2);
-print_r($test);
 
 ?>
