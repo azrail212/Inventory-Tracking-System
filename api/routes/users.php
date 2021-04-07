@@ -1,9 +1,18 @@
 <?php
+
 Flight::route('GET /users', function(){
-    Flight::json(Flight::userDao()->getAll(0,10));
+
+    $offset = Flight::query('offset',0);
+   
+    $limit = Flight::query('limit',100);
+    
+    Flight::json(Flight::userDao()->getAll($offset, $limit));
+
+
 });
 
 Flight::route('GET /users/@id', function($id){
+    
     Flight::json(Flight::userDao()->getByID($id));
 });
 
