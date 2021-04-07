@@ -6,13 +6,16 @@ Flight::route('GET /users', function(){
    
     $limit = Flight::query('limit',100);
     
-    Flight::json(Flight::userDao()->getAll($offset, $limit));
+    $search = FLight ::query('search');
 
-
+    if ($search){
+        Flight::json(Flight::userDao()->getUsersBySearch($search, $offset,$limit));
+    }else{
+        Flight::json(Flight::userDao()->getAll($offset,$limit));
+    }
 });
 
-Flight::route('GET /users/@id', function($id){
-    
+Flight::route('GET /users/@id', function($id){    
     Flight::json(Flight::userDao()->getByID($id));
 });
 
@@ -26,8 +29,7 @@ Flight::route('PUT /users/@id', function($id){
     $data = $request->data->getData();
     Flight::userDao()->update($id, $data);
     $user = Flight::userDao()->getByID($id);
-    Flight::json($user);
-    
+    Flight::json($user);  
 });
 
 ?>
