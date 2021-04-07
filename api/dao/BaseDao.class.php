@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__)."/../services/config.php";
+require_once dirname(__FILE__)."/../../config.php";
 
 class BaseDao {
 
