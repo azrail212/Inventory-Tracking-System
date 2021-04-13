@@ -20,6 +20,12 @@ class UserDao extends BaseDao{
             WHERE LOWER(userName) LIKE CONCAT('%', :name , '%') 
                 LIMIT ${limit} OFFSET ${offset}", ["name" => strtolower($search)]);
     }
+
+    public function getUserByToken($token){
+        return $this->queryUnique("SELECT * FROM Users WHERE 
+            userConfirmationToken = :userConfirmationToken", 
+                ["userConfirmationToken" => $token]);
+      }
     
 }
 ?>

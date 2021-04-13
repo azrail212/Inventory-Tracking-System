@@ -20,21 +20,9 @@ Flight::route('POST /users', function(){
     Flight::json(Flight::UserService()->add($data));
 });
 
-Flight::route('POST /register', function(){
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::UserService()->register($data));
-});
-
-Flight::route('GET /users/confirm/@token', function($token){
-    Flight::UserService()->confirm($token);
-    Flight::json(["message" => "The user has been successfully activated."]);
-  });
-
 Flight::route('PUT /users/@id', function($id){
     $data = Flight::request()->data->getData();
     Flight::json(Flight::UserService()->update($id, $data));
 });
-
-
 
 ?>
