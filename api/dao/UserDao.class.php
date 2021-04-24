@@ -15,10 +15,14 @@ class UserDao extends BaseDao{
         $this->executeUpdate('Users', $userName, $user, 'userName');
     }
 
-    public function getUsersBySearch($search, $offset, $limit){
+    public function searchUsers($search, $offset, $limit, $order){
+        list($orderColumn, $orderDirection) = self::parseOrder($order);
+        
         return $this->query("SELECT * FROM Users 
             WHERE LOWER(userName) LIKE CONCAT('%', :name , '%') 
-                LIMIT ${limit} OFFSET ${offset}", ["name" => strtolower($search)]);
+            ORDER BY ${orderColumn} ${orderDirection}
+            LIMIT ${limit} OFFSET ${offset}", 
+            ["name" => strtolower($search)]);
     }
 
     public function getUserByToken($token){

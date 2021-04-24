@@ -19,6 +19,24 @@ class BaseDao {
     }
   }
 
+  public static function parseOrder($order){
+    switch(substr($order, 0, 1)){
+      case '-': 
+        $orderDirection = "ASC"; 
+        break;
+      case '+': 
+        $orderDirection = "DESC"; 
+        break;
+      default: 
+        throw new Exception("Invalid order format. First character should be either + or -"); 
+        break;
+    };
+
+    $orderColumn = substr($order, 1);
+   
+    return [$orderColumn, $orderDirection];
+  }
+
   //returns a maximum of 25 record from the table currently in focus
   
   //inserts wanted values for an entity into a specified table
@@ -84,8 +102,13 @@ class BaseDao {
     $this->executeUpdate($this->table, $id, $entity);
   }
 
-  public function getAll($offset=0, $limit=25){
-    return $this->query("SELECT * FROM ".$this->table." LIMIT ${limit} OFFSET ${offset}",[]);
+  public function getAll($offset=0, $limit=25, $order = "-id"){
+    list($orderColumn, $orderDirection) = self::parseOrder($order);
+
+    return $this->query("SELECT *
+                         FROM ".$this->table."
+                         ORDER BY ${orderColumn} ${orderDirection}
+                         LIMIT ${limit} OFFSET ${offset}", []);
   }
 
   public function getByID($id){

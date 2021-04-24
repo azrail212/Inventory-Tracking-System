@@ -3,11 +3,13 @@
 Flight::route('GET /users', function(){
 
     $offset = Flight::query('offset',0);
-    $limit = Flight::query('limit',10);
+    $limit = Flight::query('limit',25);
     
     $search = FLight ::query('search');
 
-    Flight::json(Flight::UserService()->getUsers($search, $offset, $limit));
+    $order = FLight ::query('order', "-id");
+
+    Flight::json(Flight::UserService()->getUsers($search, $offset, $limit, $order));
 
 });
 

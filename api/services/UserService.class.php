@@ -12,11 +12,11 @@ class UserService extends BaseService{
         $this->officeDao = new BranchOfficesDao();
     }
     
-    public function getUsers($search, $offset, $limit){
+    public function getUsers($search, $offset, $limit, $order){
         if ($search){
-            return($this->dao->getUsersBySearch($search, $offset, $limit));
+            return $this->dao->searchUsers($search, $offset, $limit, $order);
         }else{
-            return($this->dao->getAll($offset,$limit));
+            return $this->dao->getAll($offset,$limit, $order);
         }
     }
 
@@ -27,7 +27,7 @@ class UserService extends BaseService{
     /* only allow registration if admin is doing it*/
     public function register($user){
         if(!isset($user['userName'])) 
-            throw new Exception ('Username not set.');
+            throw new Exception ('Username nSot set.');
         if(!isset($user['userPassword'])) 
             throw new Exception ('Password not set.');
         if($this->officeDao->getByID($user['userBranchOfficeID']) == NULL) 
