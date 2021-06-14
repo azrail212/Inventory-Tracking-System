@@ -3,7 +3,6 @@ require_once dirname(__FILE__)."/../config.php";
 
 class BaseDao {
 
-  protected $connection;
   private $table;
 
   //connecting to server
@@ -13,10 +12,24 @@ class BaseDao {
     try{
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
     }
     catch(PDOException $e) {
       throw $e;
     }
+  }
+
+  public function beginTransaction(){
+    $this->connection->beginTransaction();
+  }
+
+  public function commit(){
+    $this->connection->commit();
+  }
+
+  public function rollBack(){
+    $this->connection->rollBack();
+    //$this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
   }
 
   public static function parseOrder($order){
@@ -37,7 +50,7 @@ class BaseDao {
     return [$orderColumn, $orderDirection];
   }
 
-  //returns a maximum of 25 record from the table currently in focus
+
   
   //inserts wanted values for an entity into a specified table
   protected function insert($table, $entity){
@@ -106,9 +119,9 @@ class BaseDao {
     list($orderColumn, $orderDirection) = self::parseOrder($order);
 
     return $this->query("SELECT *
-                         FROM ".$this->table."
-                         ORDER BY ${orderColumn} ${orderDirection}
-                         LIMIT ${limit} OFFSET ${offset}", []);
+                        FROM ".$this->table."
+                        ORDER BY ${orderColumn} ${orderDirection}
+                        LIMIT ${limit} OFFSET ${offset}", []);
   }
 
   public function getByID($id){

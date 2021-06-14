@@ -27,22 +27,29 @@ class UserService extends BaseService{
     /* only allow registration if admin is doing it*/
     public function register($user){
         if(!isset($user['userName'])) 
-            throw new Exception ('Username nSot set.');
+            throw new Exception ('Username not set.');
         if(!isset($user['userPassword'])) 
             throw new Exception ('Password not set.');
         if($this->officeDao->getByID($user['userBranchOfficeID']) == NULL) 
             throw new Exception ('That Branch office does not exist.');
-
-        $user = ([
-            "userName" => $user['userName'],
-            "userPassword"=> $user["userPassword"],
-            "userStatus"=> 'PENDING',
-            "userPermissions"=>$user["userPermissions"],
-            "userBranchOfficeID"=>$user["userBranchOfficeID"],
-            "userConfirmationToken" => md5(random_bytes(16))
-        ]);
-
-        return parent::add($user);
+        
+        try{
+            $this->dao->beginTransaction();
+            $user = $this->dao->add([
+                "userName" => $user['userName'],
+                "userPassword"=> $user["userPassword"],
+                "userStatus"=> 'PENDING',
+                "userPermissions"=>$user["userPermissions"],
+                "userBranchOfficeID"=>$user["userBranchOfficeID"],
+                "userConfirmationToken" => md5(random_bytes(16))
+            ]);
+        $this->dao->commit();
+            }
+            catch (Exception $e){
+                $this->dao->rollBack();
+                throw $e;
+            }
+            return $user;
     }
 
     public function confirm($token){
@@ -50,9 +57,8 @@ class UserService extends BaseService{
     
         if (!isset($user['id'])) 
             throw new Exception("Invalid token");
-    
+
         $this->dao->update($user['id'], ["userStatus" => "ACTIVE"]);
-    
     }
 }
 ?>

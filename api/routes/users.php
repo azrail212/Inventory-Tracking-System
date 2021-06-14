@@ -3,6 +3,7 @@
 Flight::route('GET /users', function(){
 
     $offset = Flight::query('offset',0);
+
     $limit = Flight::query('limit',25);
     
     $search = FLight ::query('search');
@@ -22,7 +23,7 @@ Flight::route('POST /users', function(){
     Flight::json(Flight::UserService()->add($data));
 });
 
-Flight::route('POST /register', function(){
+Flight::route('POST /users/register', function(){
     $data = Flight::request()->data->getData();
     Flight::json(Flight::UserService()->register($data));
 });
