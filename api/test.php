@@ -9,6 +9,7 @@ require_once dirname(__FILE__)."/dao/LocationsDao.class.php";
 require_once dirname(__FILE__)."/dao/OrdersDao.class.php";
 require_once dirname(__FILE__)."/dao/StorageSpacesDao.class.php";
 require_once dirname(__FILE__)."/dao/SuppliersDao.class.php";
+require_once dirname(__FILE__)."/dao/AccountDao.class.php";
 require_once dirname(__FILE__)."/resources.php";
 
 echo 'Im OK';

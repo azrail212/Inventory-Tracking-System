@@ -1,20 +1,26 @@
 <?php
-ini_set('display_errors',1);
+/*ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
-require_once dirname(__FILE__)."/../../dao/UserDao.class.php";
-require_once dirname(__FILE__)."/../../dao/BranchOfficesDao.class.php";
-require_once dirname(__FILE__)."/../../dao/LocationsDao.class.php";
-require_once dirname(__FILE__)."/../../dao/OrdersDao.class.php";
-require_once dirname(__FILE__)."/../../dao/StorageSpacesDao.class.php";
-require_once dirname(__FILE__)."/../../dao/SuppliersDao.class.php";
+require_once dirname(__FILE__)."/../../../dao/BranchOfficesDao.class.php";
+require_once dirname(__FILE__)."/../../../dao/LocationsDao.class.php";
+require_once dirname(__FILE__)."/../../../dao/OrdersDao.class.php";
+require_once dirname(__FILE__)."/../../../dao/StorageSpacesDao.class.php";
+require_once dirname(__FILE__)."/../../../dao/SuppliersDao.class.php";
+require_once dirname(__FILE__)."/../../../dao/AccountDao.class.php";
 require_once dirname(__FILE__)."/resources.php";
 
 $resources= new Resources();
+$dao = new AccountDao();
 
-echo 'Everything is commented out in code just in case you dont want to insert 
-a bunch more records and accidentally opened this page';
+for ($i=0;$i<1000;$i++){
+$account = [
+    'name' => $resources->randomString(rand(5,10)),
+    'status'=>$resources->randomStatus()
+    ];
+    $dao->add($account);
+}*/
 /*$dao= new StorageSpacesDao();
 for ($i=0;$i<100;$i++){
 $storageSpaceAdd=[

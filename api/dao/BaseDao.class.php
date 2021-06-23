@@ -19,44 +19,35 @@ class BaseDao {
     }
   }
 
-  public function beginTransaction(){
-    $this->connection->beginTransaction();
+  public function begin_transaction(){
+    $this->connection->begin_transaction();
   }
 
   public function commit(){
     $this->connection->commit();
   }
 
-  public function rollBack(){
-    $this->connection->rollBack();
+  public function rollback(){
+    $this->connection->rollback();
     //$this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
   }
 
-  public static function parseOrder($order){
+  public function parse_order($order){
     switch(substr($order, 0, 1)){
-      case '-': 
-        $orderDirection = "ASC"; 
-        break;
-      case '+': 
-        $orderDirection = "DESC"; 
-        break;
-      default: 
-        throw new Exception("Invalid order format. First character should be either + or -"); 
-        break;
+      case '-': $order_direction = "ASC";break;
+      case '+':$order_direction = "DESC";break;
+      default:throw new Exception("Invalid order format. First character should be either + or -"); break;
     };
 
-    $orderColumn = substr($order, 1);
-   
-    return [$orderColumn, $orderDirection];
+    $order_column = substr($order, 1);
+
+    return [$order_column, $order_direction];
   }
 
-
-  
   //inserts wanted values for an entity into a specified table
   protected function insert($table, $entity){
     $query="INSERT INTO ${table} (";
 
-    //looping through columns in a row/entity
     foreach($entity as $column => $value){
       $query .= $column.", ";
     }
@@ -64,7 +55,7 @@ class BaseDao {
     $query = substr($query, 0, -2);
     $query.=") VALUES (";
 
-    //looping again, appending values to the query 
+
     foreach($entity as $column=>$value){
       $query.=":".$column.", ";
     }
@@ -78,9 +69,9 @@ class BaseDao {
     $entity['id']=$this->connection->lastInsertID(); //returns ID of the last inserted row or sequence value
     return $entity;
   }
-  
+
   //allows changing existing values in any table
-  protected function executeUpdate($table, $id, $entity, $idColumn='id'){
+  protected function execute_update($table, $id, $entity, $idcolumn='id'){
     $query= "UPDATE ${table} SET ";
 
     foreach($entity as $name=>$value){
@@ -88,7 +79,7 @@ class BaseDao {
     }
 
     $query=substr($query, 0, -2);
-    $query .= " WHERE ${idColumn} = :id";
+    $query .= " WHERE ${idcolumn} = :id";
 
     $stmt = $this->connection->prepare($query);
     $entity['id']=$id;
@@ -102,7 +93,7 @@ class BaseDao {
     return $stmt->fetchAll(PDO::FETCH_ASSOC); //returns an array indexed by column name as returned in your result set
   }
 
-  protected function queryUnique($query, $parameters){
+  protected function query_unique($query, $parameters){
     $results = $this->query($query, $parameters);
     return reset($results);
   }
@@ -112,20 +103,21 @@ class BaseDao {
   }
 
   public function update($id, $entity){
-    $this->executeUpdate($this->table, $id, $entity);
+    $this->execute_update($this->table, $id, $entity);
   }
 
-  public function getAll($offset=0, $limit=25, $order = "-id"){
-    list($orderColumn, $orderDirection) = self::parseOrder($order);
+  public function get_all($offset=0, $limit=25, $order = "-id"){
+    list($order_column, $order_direction) = self::parse_order($order);
 
+    $order_column = substr($order,1);
     return $this->query("SELECT *
                         FROM ".$this->table."
-                        ORDER BY ${orderColumn} ${orderDirection}
-                        LIMIT ${limit} OFFSET ${offset}", []);
+                        ORDER BY ${order_column} ${order_direction}
+                        LIMIT ${limit} OFFSET ${offset}",[]);
   }
 
-  public function getByID($id){
-    return $this->queryUnique("SELECT * FROM " .$this->table." WHERE id = :id", ["id"=>$id]);
+  public function get_by_id($id){
+    return $this->query_unique("SELECT * FROM " .$this->table." WHERE id = :id", ["id"=>$id]);
   }
 }
 ?>

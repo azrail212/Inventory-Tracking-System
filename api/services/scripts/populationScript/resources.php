@@ -22,7 +22,7 @@ $cities= array("Sarajevo","Banja Luka","Mostar","Bijeljina","Prijedor","Doboj","
     "Istočno Sarajevo","Zvornik","Bihać","Široki Brijeg","Tuzla","Zenica","Livno","Cazin",
     "Goražde","Gradiška","Živinice","Gračanica","Gradačac","Srebrenik",
     "Visoko","Ljubuški","Čapljina","Derventa");
-    
+
 class Resources{
     function randomStatus(){
         return array_rand(array_flip(array("active","offline","blocked")));
@@ -40,13 +40,13 @@ class Resources{
         $city= array_rand(array_flip($cities));
         return $city;
     }
-    function randomString($length){  
+    function randomString($length){
         $string = '';
-        $vowels = array("a","e","i","o","u");  
+        $vowels = array("a","e","i","o","u");
         $consonants = array(
-            'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 
+            'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm',
             'n', 'p', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'
-        );  
+        );
 
         $max = $length / 2;
         for ($i = 1; $i <= $max; $i++)
