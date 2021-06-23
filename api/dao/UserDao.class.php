@@ -4,32 +4,22 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 class UserDao extends BaseDao{
 
     public function __construct(){
-        parent::__construct("Users");
+        parent::__construct("users");
     }
 
-    public function getUserByName($name){
-        return $this->queryUnique("SELECT * FROM Users WHERE userName=:userName", ["userName"=>$name]);
+    public function get_user_by_name($username){
+        return $this->query_unique("SELECT * FROM users WHERE username=:username", ["username"=>$username]);
     }
 
-    public function updateUserByName($userName, $user){
-        $this->executeUpdate('Users', $userName, $user, 'userName');
+    public function update_user_by_name($username, $user){
+        $this->update('users', $username, $user, 'username');
     }
 
-    public function searchUsers($search, $offset, $limit, $order){
-        list($orderColumn, $orderDirection) = self::parseOrder($order);
-        
-        return $this->query("SELECT * FROM Users 
-            WHERE LOWER(userName) LIKE CONCAT('%', :name , '%') 
-            ORDER BY ${orderColumn} ${orderDirection}
-            LIMIT ${limit} OFFSET ${offset}", 
-            ["name" => strtolower($search)]);
-    }
-
-    public function getUserByToken($token){
-        return $this->queryUnique("SELECT * FROM Users WHERE 
-            userConfirmationToken = :userConfirmationToken", 
-                ["userConfirmationToken" => $token]);
+    public function get_user_by_token($token){
+        return $this->query_unique("SELECT * FROM users WHERE
+            token = :token",
+                ["token" => $token]);
       }
-    
+
 }
 ?>
