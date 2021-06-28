@@ -1,100 +1,64 @@
 <?php
 require_once dirname(__FILE__)."/../config.php";
 
+/**
+* @author azrail
+*/
 class BaseDao {
+  protected $connection;
 
   private $table;
 
-  //connecting to server
   public function __construct($table){
-    $this->table=$table;
-
-    try{
+    $this->table = $table;
+    try {
       $this->connection = new PDO("mysql:host=".Config::DB_HOST.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
-    }
-    catch(PDOException $e) {
+    } catch(PDOException $e) {
       throw $e;
     }
   }
 
-  public function begin_transaction(){
-    $this->connection->begin_transaction();
-  }
-
-  public function commit(){
-    $this->connection->commit();
-  }
-
-  public function rollback(){
-    $this->connection->rollback();
-    //$this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
-  }
-
-  public function parse_order($order){
-    switch(substr($order, 0, 1)){
-      case '-': $order_direction = "ASC";break;
-      case '+':$order_direction = "DESC";break;
-      default:throw new Exception("Invalid order format. First character should be either + or -"); break;
-    };
-
-    $order_column = substr($order, 1);
-
-    return [$order_column, $order_direction];
-  }
-
-  //inserts wanted values for an entity into a specified table
   protected function insert($table, $entity){
-    $query="INSERT INTO ${table} (";
-
-    foreach($entity as $column => $value){
+    $query = "INSERT INTO ${table} (";
+    foreach ($entity as $column => $value) {
       $query .= $column.", ";
     }
-
     $query = substr($query, 0, -2);
-    $query.=") VALUES (";
-
-
-    foreach($entity as $column=>$value){
-      $query.=":".$column.", ";
+    $query .= ") VALUES (";
+    foreach ($entity as $column => $value) {
+      $query .= ":".$column.", ";
     }
-
     $query = substr($query, 0, -2);
-    $query.=")";//closing query
+    $query .= ")";
 
-    //prepare connection to execute $query
-    $stmt=$this->connection->prepare($query);
-    $stmt->execute($entity); //execution and injection prevention
-    $entity['id']=$this->connection->lastInsertID(); //returns ID of the last inserted row or sequence value
+    $stmt= $this->connection->prepare($query);
+    $stmt->execute($entity); // sql injection prevention
+    $entity['id'] = $this->connection->lastInsertId();
     return $entity;
   }
 
-  //allows changing existing values in any table
-  protected function execute_update($table, $id, $entity, $idcolumn='id'){
-    $query= "UPDATE ${table} SET ";
-
-    foreach($entity as $name=>$value){
-      $query.= $name ."= :". $name. ", ";
+  protected function execute_update($table, $id, $entity, $id_column = "id"){
+    $query = "UPDATE ${table} SET ";
+    foreach($entity as $name => $value){
+      $query .= $name ."= :". $name. ", ";
     }
+    $query = substr($query, 0, -2);
+    $query .= " WHERE ${id_column} = :id";
 
-    $query=substr($query, 0, -2);
-    $query .= " WHERE ${idcolumn} = :id";
-
-    $stmt = $this->connection->prepare($query);
-    $entity['id']=$id;
+    $stmt= $this->connection->prepare($query);
+    $entity['id'] = $id;
     $stmt->execute($entity);
   }
 
-  //this can execute any kind of query on the database
-  protected function query($query, $parameters){
+  protected function query($query, $params){
     $stmt = $this->connection->prepare($query);
-    $stmt->execute($parameters); //executes query using parameters we passed
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); //returns an array indexed by column name as returned in your result set
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  protected function query_unique($query, $parameters){
-    $results = $this->query($query, $parameters);
+  protected function query_unique($query, $params){
+    $results = $this->query($query, $params);
     return reset($results);
   }
 
@@ -106,18 +70,12 @@ class BaseDao {
     $this->execute_update($this->table, $id, $entity);
   }
 
-  public function get_all($offset=0, $limit=25, $order = "-id"){
-    list($order_column, $order_direction) = self::parse_order($order);
-
-    $order_column = substr($order,1);
-    return $this->query("SELECT *
-                        FROM ".$this->table."
-                        ORDER BY ${order_column} ${order_direction}
-                        LIMIT ${limit} OFFSET ${offset}",[]);
+  public function get_by_id($id){
+    return $this->query_unique("SELECT * FROM ".$this->table." WHERE id = :id", ["id" => $id]);
   }
 
-  public function get_by_id($id){
-    return $this->query_unique("SELECT * FROM " .$this->table." WHERE id = :id", ["id"=>$id]);
+  public function get_all($offset = 0, $limit = 25){
+    return $this->query("SELECT * FROM ".$this->table." LIMIT ${limit} OFFSET ${offset}", []);
   }
 }
 ?>
