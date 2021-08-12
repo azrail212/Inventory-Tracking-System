@@ -16,8 +16,8 @@ class AccountDao extends BaseDao{
           ORDER BY ${order_column} ${order_direction}
           LIMIT ${limit} OFFSET ${offset}",
           ["name" => strtolower($search)]);
+
   }
 }
 
 ?>
- 

@@ -7,12 +7,16 @@ class UserDao extends BaseDao{
         parent::__construct("users");
     }
 
-    public function get_user_by_name($username){
-        return $this->query_unique("SELECT * FROM users WHERE username=:username", ["username"=>$username]);
+    public function get_user_by_name($name){
+        return $this->query_unique("SELECT * FROM users WHERE name=:name", ["name"=>$name]);
     }
 
-    public function update_user_by_name($username, $user){
-        $this->update('users', $username, $user, 'username');
+    public function get_user_by_email($email){
+        return $this->query_unique("SELECT * FROM users WHERE email=:email", ["email"=>$email]);
+    }
+
+    public function update_user_by_name($name, $user){
+        $this->update('users', $name, $user, 'name');
     }
 
     public function get_user_by_token($token){

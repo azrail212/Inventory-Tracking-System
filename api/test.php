@@ -10,10 +10,17 @@ require_once dirname(__FILE__)."/dao/OrdersDao.class.php";
 require_once dirname(__FILE__)."/dao/StorageSpacesDao.class.php";
 require_once dirname(__FILE__)."/dao/SuppliersDao.class.php";
 require_once dirname(__FILE__)."/dao/AccountDao.class.php";
-require_once dirname(__FILE__)."/resources.php";
 
 echo 'Im OK';
 $dao= new UserDao();
-echo json_encode($dao->getAll($_GET['offset'], $_GET['limit']), JSON_PRETTY_PRINT);
+$bDao = new BaseDao();
+
+$user=[
+  "name"="Azra Becirovic",
+    "email"="Azra Becirovic",
+      "password"="azra",
+        "account_id"= 3
+];
+$user = $dao->add($user);
 
 ?>
